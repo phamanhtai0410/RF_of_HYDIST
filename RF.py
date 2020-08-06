@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import os 
 import sys
-
+import math
 
 
 #Class definition
@@ -78,7 +78,8 @@ def depth_converter(cross_section_3D):
 def center_defining(cross_section_2D, n):
 #           Defining matrix of center points based on cross-section input
     center_list = [0 , 0] * n
-
+    #first = index_first(cross_section_2D)
+    
 
     ###
 
@@ -118,17 +119,23 @@ def Radius(center_y, RL):
 
 #-----------------------------------------------------------------------
 
-
-
-
-
-
-
-
 #----------------------------------------------------------------------#
                 #################################
                 #      Calculating Functions    #
                 #################################
 
-def Cal_N(isXrXl, isF, FS, lamda):
+def Cal_N(isXrXl, isF, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW, N):
+    for i in range(Surface.shape):
+        if isXrXl:
+            tam1 = (c * beta[i] - u * beta[i]) / FS
+            tam2 = N[i] * (tan(phi / 180 * math.pi) )
+            #       old N[i]s need to be add to list+params
+
+def Cal_FS(isF):
+    pass
+
+def Calculating_FoS():
+    pass
+
+def 
     
