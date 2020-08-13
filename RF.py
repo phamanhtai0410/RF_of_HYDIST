@@ -125,11 +125,21 @@ def Radius(center_y, RL):
                 #################################
 
 def Cal_N(isXrXl, isF, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW, N):
+    XlXr = [0] * Surface.shape
+    tam1 = 0
+    tam2 = 0
+    tam3 = 0 
+    tam4 = 0
     for i in range(Surface.shape):
         if isXrXl:
-            tam1 = (c * beta[i] - u * beta[i]) / FS
-            tam2 = N[i] * (tan(phi / 180 * math.pi) )
+            tam1 = (c * beta[i] - u * beta[i] * math.tan(phi / 180 * math.pi)) * math.cos(alpha[i] / 180 * math.pi) / FS
+            tam2 = N[i] * (math.tan(phi / 180 * math.pi) * math.cos(alpha[i] / 180 * math.pi) / FS - math.sin(alpha[i]) / 180 * math.pi)
             #       old N[i]s need to be add to list+params
+            XlXr[i] = fx[i] * lamda * ( tam1 + tam2 - kW + D * math.cos(omega / 180 * math.pi))
+        else:
+            XlXr[i] = 0
+
+
 
 def Cal_FS(isF):
     pass
