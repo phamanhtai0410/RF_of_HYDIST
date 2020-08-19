@@ -171,7 +171,7 @@ Private Function Calculating_FS(ByVal N as Normal_Force, ByVal F_m As Boolean, B
             For count = MC.first To MC.final
                 tam1 = tam1 + MC.c * MC.beta(count) * R
                 tam2 = tam2 + (N.N_m(count) - MC.u * MC.beta(count)) * R * Math.Tan(MC.phi)
-                tam3 = MC.W(count) * MC.x(count) - MC.A * MC.aa(count)
+                tam3 = tam3 + MC.W(count) * MC.x(count) - MC.A * MC.aa(count)
             Next
             FS = (tam1 + tam2) / tam3
         End If
