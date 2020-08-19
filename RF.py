@@ -77,7 +77,7 @@ def index_first(cross_section_2D):
 def depth_converter(cross_section_3D):
 #           Convert x y z cross-section type to x z cross section for RF pre- processor
     for i in range(cross_section_3D.shape[1]):
-        cross_section_2D.append(math.sqrt((cross_section_3D[0, i] - cross_section_3D[0, 0]) ** 2 + (c[1, i] - cross_section_3D[1, 0]) ** 2) cross_section_3D[2, i]])
+        cross_section_2D.append([math.sqrt((cross_section_3D[0, i] - cross_section_3D[0, 0]) ** 2 + (c[1, i] - cross_section_3D[1, 0]) ** 2) cross_section_3D[2, i]])
     return cross_section_2D
 #----------------------------------------------------------------------
 
