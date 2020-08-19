@@ -77,7 +77,7 @@ def index_first(cross_section_2D):
 def depth_converter(cross_section_3D):
 #           Convert x y z cross-section type to x z cross section for RF pre- processor
     for i in range(cross_section_3D.shape[1]):
-        cross_section_2D.append(math.sqrt((cross_section_3D[0, i] - cross_section_3D[0, 0]) ** 2 + (c[1, i] - cross_section_3D[1, 0]) ** 2) cross_section_3D[2, i]])
+        cross_section_2D.append([math.sqrt((cross_section_3D[0, i] - cross_section_3D[0, 0]) ** 2 + (c[1, i] - cross_section_3D[1, 0]) ** 2) cross_section_3D[2, i]])
     return cross_section_2D
 #----------------------------------------------------------------------
 
@@ -130,12 +130,13 @@ def Radius(center_y, RL):
                 #      Calculating Functions    #
                 #################################
 
-def Cal_N(isXrXl, isF, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW, N):
+def Cal_N(isXrXl, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW):
     XlXr = [0] * Surface.shape
     tam1 = 0
     tam2 = 0
     tam3 = 0 
     tam4 = 0
+    N = [0] * Surface.shape
     for i in range(Surface.shape):
         if isXrXl:
             tam1 = (c * beta[i] - u * beta[i] * math.tan(phi / 180 * math.pi)) * math.cos(alpha[i] / 180 * math.pi) / FS
@@ -145,13 +146,76 @@ def Cal_N(isXrXl, isF, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW, N):
         else:
             XlXr[i] = 0
 
+        tam3 = (c * beta[i] * math.sin(alpha[i] / 180 * math.pi) + u * beta[i] * math.tan(phi / 180 * math.pi)) / FS
+        tam4 = math.cos(alpha[i] / 180 * math.pi) + math.sin(alpha[i] / 180 * math.pi) + math.tan(phi / 180 * math.pi) / FS
+        N[i] = (W[i] + XlXr[i] - tam3) / tam4
+    return N
+     
+#--------------------------------------------------------------------------                    
+
+def Cal_FS(isF, N, c, u, beta, alpha, phi, x, aa, A. R, W):
+    tam1 = 0
+    tam2 = 0
+    tam3 = 0
+    for i in range(Surface.shape):
+        if isF:
+            tam1 = tam1 + c * beta[i] * math.cos(alpha[i] / 180 * math.pi)
+            tam2 = tam2 + (N[i] - u * beta[i] * math.tan(phi / 180 * math.pi) * math.cos(alpha[i] / 180 * math.pi))
+            tam3 = tam3 + N[i] * math.sin(alpha[i] / 180 * math.pi) - A
+        else
+            tam1 = tam1 + tam1 + c * beta[i] * R
+            tam2 = tam2 + (N[i] - u * beta[i]) * R * math.tan(phi / 180 * math.pi)
+            tam3 = tam3 + W[i] * x[i] - A * aa[i]
+    FS = (tam1 + tam2) / tam3
+    return FS
+
+#------------------------------------------------------------------------------
+
+def Calculating_FoS(Surface, lamda, fx, Tolerance):
+    
+    # '////////////////////////////////////////////////////
+    # '///////////////////////////////////////////////////
+    # ' MAIN CALCULATING BELOW
+    # ' Building an plot with every surface in vertical of lamda changing series and A list of value F_f,F_m
+    # 'After got that, we take intersection point of two lines F_f(lamda) and F_m(lamda).
+    # 'At that piont, we got F_m = F_f = F.O.S of the current surface
+    # '   With every lamda values, We use RAPID SOLVER - Multi Iterations to have Convergence Status
+    # '   The result of RAPID SOLVER is list of F_m corresponding with lamda and also with F_f
+    # '
 
 
-def Cal_FS(isF):
-    pass
+    # 'MAIN 4 STAGES of FOS CALCULATING
+    # 'Main Concept of RAPID SOLVER - Newton Raphson Algorithm
+    # '-----------------------------------------------------------------
+    # '   STAGE 1: 1 Iteration : Set X = E = 0 at every slice ; set lamda = 0 ;
+    # '   STAGE 2: 4-6 Iterations :    X = E = 0 as XlXr = False in Calculating_N ; to convergence F_m and F_f
+    # '   STAGE 3: Main RAPID SOLVER - According to Newton Raphson Algorithm
+    # '       set initial lamda = 2/3 slope between crest and toe
+    # '       Selected Tolerance
+    # '       Iterations until we got Abs(F_f - F_m) < Tolerance
+    # '   STAGE 4: We got a list of F_f(lamda) and F_m(lamda)
+    # '       Aferthat, we plot F_f(lamda) and F_m(lamda) ; the intersection is value of F.O.S that we finding
+    
+    #       DECLARATION AT THE BEGINNING POINT
+    N = [0] * Surface.shape
+    FS_f = [0] * lamda.shape
+    FS_m = [0] * lamda.shape
 
-def Calculating_FoS():
-    pass 
+
+    
+    #   STAGE  1 : No X and E ; lamda = 0
+
+    FS_f_crr = Cal_FS(True, N, c, u, beta, alpha, phi, x, aa, A. R, W)
+    FS_m_crr = Cal_FS(False,N, c, u, beta, alpha, phi, x, aa, A. R, W)
+
+
+    for i in range(lamda.shape):
+        for j in range(fx.shape):
+
+            
+
+            #   STAGE 2
+            for k in range(6):
 
 
 
