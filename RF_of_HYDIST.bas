@@ -253,11 +253,11 @@ Public Sub FoS_Calculating(ByRef fx() As Single, ByRef lamda() As Single)
         'STAGE 3
         '/////////////////////////////////
             Do
-                Call Calculating_N(True, True, FS_m_crr, first, final, fx_curr, lamda_crr)
+                Call Calculating_N(True, True, FS_f_crr, first, final, fx_curr, lamda_crr)
                 FS_f_crr = Calculating_FS(True, first, final)
                 Call Calculating_N(True, False, FS_m_crr, first, final, fx_curr, lamda_crr)
                 FS_m_crr = Calculating_FS(False, first, final)
-            Loop While (Math.Abs(FS_f - FS_m) > Tolerance)
+            Loop While (Math.Abs(FS_f_crr - FS_m_crr) > Tolerance)
        Next
        FS_f(kkk) = FS_f_crr
        FS_m(kkk) = FS_m_crr

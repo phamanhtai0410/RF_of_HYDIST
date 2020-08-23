@@ -153,7 +153,7 @@ def Cal_N(isXrXl, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW):
      
 #--------------------------------------------------------------------------                    
 
-def Cal_FS(isF, N, c, u, beta, alpha, phi, x, aa, A. R, W):
+def Cal_FS(isF, N, c, u, beta, alpha, phi, x, aa, A, R, W):
     tam1 = 0
     tam2 = 0
     tam3 = 0
@@ -197,28 +197,40 @@ def Calculating_FoS(Surface, lamda, fx, Tolerance):
     # '       Aferthat, we plot F_f(lamda) and F_m(lamda) ; the intersection is value of F.O.S that we finding
     
     #       DECLARATION AT THE BEGINNING POINT
-    N = [0] * Surface.shape
+    W[i] = [0] * Surface.shape
+    N = [W[i] * alpha[i] for i in range(Surface.shape)]
     FS_f = [0] * lamda.shape
     FS_m = [0] * lamda.shape
 
 
     
-    #   STAGE  1 : No X and E ; lamda = 0
-
-    FS_f_crr = Cal_FS(True, N, c, u, beta, alpha, phi, x, aa, A. R, W)
-    FS_m_crr = Cal_FS(False,N, c, u, beta, alpha, phi, x, aa, A. R, W)
-
+    
 
     for i in range(lamda.shape):
+        #   STAGE  1 : No X and E ; lamda = 0
+        FS_f_crr = Cal_FS(True, N, c, u, beta, alpha, phi, x, aa, A. R, W)
+        FS_m_crr = Cal_FS(False,N, c, u, beta, alpha, phi, x, aa, A. R, W)
         for j in range(fx.shape):
-
-            
-
             #   STAGE 2
             for k in range(6):
+                N = Cal_N(False, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW)
+                FS_f_crr = Cal_FS(True, N, c, u, beta, alpha, phi, x, aa, A, R, W)
 
+            for k in range(6):
+                N = Cal_N(False, FS, lamda, fx, c, u, alpha, beta, phi, W, omega, kW)
+                FS_m_crr = Cal_FS(False, N, c, u, beta, alpha, phi, x, aa, A, R, W)
 
+            #   STAGE 3
+            while (abs(FS_f_crr - FS_m_crr) > Tolerance):
+                N = Cal_N(True, FS_f_crr, lamda[i], fx[j], c, u, alpha, beta, phi, W, omega, kW)
+                FS_f_crr = Cal_FS(True, N, c, u, beta, alpha, phi, x, aa, A, R, W)
+                N = Cal_N(True, FS_m_crr, lamda[i], fx[j], c, u, alpha, beta, phi, W, omega, kW)
+                FS_m_crr = Cal_FS(False, N, c, u, beta, alpha, phi, x, aa, A, R, W)
+        FS_f[i] = FS_f_crr
+        FS_m[i] = FS_m_crr
 
+    #   STAGE 4: 
+    
 
 
 #===========================================================================
