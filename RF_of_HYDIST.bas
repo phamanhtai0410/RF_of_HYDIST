@@ -35,7 +35,7 @@ End Type
 Public Sub Defining_Center()
     'Tao luoi tam
     ReDim Matrix_C(Number_of_Center, 2)
-    If Number_of_Center = 1 Then
+    If Number_of_Center = 1 Then`
         Matrix_C(1, 1) = x_center_entry
         Matrix_C(1, 2) = y_center_entry
     Else

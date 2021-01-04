@@ -1,0 +1,14 @@
+{"soil_props": {"c": "24000",
+	      "phi": "35",
+	      "gamma": "1600"},
+"calculating_props": {"u": "15",
+		    "kW": "15000",
+		    "D": "0",
+		    "A": "0",
+		    "omega": "0"},
+"setting": {"fx" : "sin",
+	    "Tolerance" : "0.5",
+	    "FSCritical" : "1.119"
+}
+}
+
